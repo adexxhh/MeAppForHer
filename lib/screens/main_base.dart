@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import 'home_dashboard_screen.dart';
+import 'makebelieve_screen.dart';
 
 class MainBase extends StatefulWidget {
   const MainBase({Key? key}) : super(key: key);
@@ -9,29 +10,65 @@ class MainBase extends StatefulWidget {
   State<MainBase> createState() => _MainBaseState();
 }
 
-class _MainBaseState extends State<MainBase> {
+class _MainBaseState extends State<MainBase> with SingleTickerProviderStateMixin {
   int _currentIndex = 0;
+  late AnimationController _navController;
+  late Animation<double> _navAnimation;
 
-  final List<Widget> _pages = [
-    const HomeDashboardScreen(),
-    const Center(child: Text('Trivia', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
-    const Center(child: Text('Music', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
-    const Center(child: Text('Life', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
-    const Center(child: Text('Draw', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _navController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+    
+    // Animate from 30 (normal) down to -100 (hidden) and back to 30.
+    _navAnimation = TweenSequence<double>([
+      TweenSequenceItem(tween: Tween(begin: 30.0, end: -100.0).chain(CurveTween(curve: Curves.easeIn)), weight: 1),
+      TweenSequenceItem(tween: Tween(begin: -100.0, end: 30.0).chain(CurveTween(curve: Curves.easeOutBack)), weight: 1),
+    ]).animate(_navController);
+  }
+
+  @override
+  void dispose() {
+    _navController.dispose();
+    super.dispose();
+  }
+
+  void _triggerNavBarBounce() {
+    _navController.forward(from: 0.0);
+  }
+
+  List<Widget> _buildPages() {
+    return [
+      HomeDashboardScreen(onVibeToggled: _triggerNavBarBounce),
+      const Center(child: Text('Trivia', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
+      const Center(child: Text('Music', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
+      const MakebelieveScreen(), // Repurposed from 'Life'
+      const Center(child: Text('Draw', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: Stack(
         children: [
-          _pages[_currentIndex],
+          _buildPages()[_currentIndex],
           
-          // Custom Bottom Navigation Bar
-          Positioned(
-            left: 20,
-            right: 20,
-            bottom: 30,
+          // Animated Custom Bottom Navigation Bar
+          AnimatedBuilder(
+            animation: _navAnimation,
+            builder: (context, child) {
+              return Positioned(
+                left: 20,
+                right: 20,
+                bottom: _navAnimation.value,
+                child: child!,
+              );
+            },
             child: Container(
               height: 70,
               decoration: BoxDecoration(

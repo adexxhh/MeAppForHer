@@ -238,7 +238,7 @@ class _GatekeeperScreenState extends State<GatekeeperScreen> {
           },
           builder: (context, candidateData, rejectedData) {
             return Container(
-              minHeight: 80,
+              constraints: const BoxConstraints(minHeight: 80),
               width: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
