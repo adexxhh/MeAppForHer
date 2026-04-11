@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../theme/app_theme.dart';
 import '../widgets/blob_container.dart';
+import '../widgets/hail_mary_background.dart';
 
 enum Vibe { normal, loveyDovey, divine, emotional, funny, inLove }
 
@@ -230,12 +231,25 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
     return "${days}d ${hours}h ${mins}m";
   }
 
+  Widget _buildTypewriterText(String text, TextStyle style) {
+    return TweenAnimationBuilder<int>(
+      tween: IntTween(begin: 0, end: text.length),
+      duration: Duration(milliseconds: text.length * 120),
+      builder: (context, value, child) {
+        return Text(
+          text.substring(0, value) + (value < text.length ? "_" : ""),
+          style: style,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox.expand( // Force it to fill the entire screen structure natively
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 500),
-        color: _getBackgroundColor(),
+        color: _getBackgroundColor() == Colors.transparent ? null : _getBackgroundColor(),
         child: Stack(
           children: [
             // --- MAIN BODY (HOME) ---
@@ -247,14 +261,14 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                   children: [
                     const SizedBox(height: 20),
                     // Header
-                    Text(
+                    _buildTypewriterText(
                       "hey khadija!\nwassup?",
-                      style: _getHeaderStyle(),
-                    ).animate(target: _activeVibe == Vibe.divine && !_showCompliment ? 1 : 0).shimmer(duration: 1000.ms),
+                      _getHeaderStyle().copyWith(color: AppTheme.starkWhite, shadows: [const Shadow(color: Colors.black54, blurRadius: 10)]),
+                    ),
                     const SizedBox(height: 8),
                     Text(
                       "have a fun time here XOXO",
-                      style: _getSubHeaderStyle(),
+                      style: _getSubHeaderStyle().copyWith(color: AppTheme.starkWhite.withOpacity(0.9)),
                     ),
                     
                     const SizedBox(height: 30),
@@ -265,7 +279,8 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.starkBlack,
+                        color: AppTheme.starkWhite,
+                        shadows: [Shadow(color: Colors.black54, blurRadius: 5)],
                       ),
                     ),
                     const SizedBox(height: 10),

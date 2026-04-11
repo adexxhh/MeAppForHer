@@ -30,8 +30,22 @@ class _GatekeeperScreenState extends State<GatekeeperScreen> {
     "Not quite right. Try rearranging!"
   ];
   
-  final List<String> availableWords = ["boy", "I", "love", "him"];
+  late List<String> availableWords;
+  late String targetSentence;
   List<String> droppedWords = [];
+
+  @override
+  void initState() {
+    super.initState();
+    final List<String> possibleSentences = [
+      "boy I love him",
+      "I love you Adesh",
+      "oh captain my captain",
+      "you are my favorite"
+    ];
+    targetSentence = possibleSentences[Random().nextInt(possibleSentences.length)];
+    availableWords = targetSentence.split(" ")..shuffle();
+  }
   
   String currentError = "";
 
@@ -56,7 +70,15 @@ class _GatekeeperScreenState extends State<GatekeeperScreen> {
 
   void _verifyPuzzle() async {
     final formedSentence = droppedWords.join(" ");
-    if (formedSentence == "boy I love him" || formedSentence == "I love him boy") {
+    bool isCorrect = false;
+    
+    if (formedSentence.toLowerCase() == targetSentence.toLowerCase()) {
+      isCorrect = true;
+    } else if (targetSentence == "boy I love him" && formedSentence == "I love him boy") {
+      isCorrect = true; // Special alternate case
+    }
+
+    if (isCorrect) {
       setState(() {
         currentError = "";
       });

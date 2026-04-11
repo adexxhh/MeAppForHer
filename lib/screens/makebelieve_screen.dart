@@ -98,13 +98,6 @@ class _MakebelieveScreenState extends State<MakebelieveScreen> {
     setState(() {
       _state = GameState.reading;
     });
-
-    // Auto progress to rating after they've had time to read
-    Future.delayed(const Duration(seconds: 8), () {
-      if (mounted && _state == GameState.reading) {
-         setState(() => _state = GameState.rating);
-      }
-    });
   }
 
   Widget _buildIntro() {
@@ -227,9 +220,20 @@ class _MakebelieveScreenState extends State<MakebelieveScreen> {
           "Step 1:",
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey),
         ),
-        const Text(
-          "Where do we live?",
-          style: TextStyle(fontSize: 34, fontWeight: FontWeight.w900, color: AppTheme.starkBlack),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              "Where do we live?",
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900, color: AppTheme.starkBlack),
+            ),
+            IconButton(
+              icon: const Icon(Icons.shuffle_rounded, size: 28),
+              onPressed: () {
+                setState(() => _cityOptions = MakebelieveData.getRandomCities(3));
+              },
+            ),
+          ],
         ),
         const SizedBox(height: 20),
         Expanded(
@@ -282,9 +286,28 @@ class _MakebelieveScreenState extends State<MakebelieveScreen> {
           title == "Adesh" ? "Step 2:" : "Step 3:",
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey),
         ),
-        Text(
-          "What is $title doing?",
-          style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w900, color: AppTheme.starkBlack),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "What is $title doing?",
+              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w900, color: AppTheme.starkBlack),
+            ),
+            IconButton(
+              icon: const Icon(Icons.shuffle_rounded, size: 28),
+              onPressed: () {
+                setState(() {
+                   if (title == "Adesh") {
+                     _hisJobOptions = MakebelieveData.getRandomOccupations(3);
+                   } else {
+                     var tempHer = MakebelieveData.getRandomOccupations(10);
+                     tempHer.removeWhere((e) => _hisJobOptions.contains(e));
+                     _herJobOptions = tempHer.take(3).toList();
+                   }
+                });
+              },
+            ),
+          ],
         ),
         const SizedBox(height: 30),
         Expanded(
@@ -319,37 +342,46 @@ class _MakebelieveScreenState extends State<MakebelieveScreen> {
   }
 
   Widget _buildReading() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(30),
-            decoration: BoxDecoration(
-              color: AppTheme.starkBlack,
-              borderRadius: BorderRadius.circular(30),
-              boxShadow: [BoxShadow(color: AppTheme.pastelYellow.withOpacity(0.5), blurRadius: 30, spreadRadius: 10)],
-            ),
-            child: Text(
-              _currentNarrative,
-              textAlign: TextAlign.justify,
-              style: const TextStyle(
-                fontSize: 20,
-                color: AppTheme.starkWhite,
-                fontWeight: FontWeight.w500,
-                height: 1.6,
+    return Column(
+      children: [
+        const SizedBox(height: 40),
+        const Text("Our Future", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900, color: AppTheme.starkBlack)),
+        const SizedBox(height: 20),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.all(30),
+              margin: const EdgeInsets.only(bottom: 20),
+              decoration: BoxDecoration(
+                color: AppTheme.starkBlack,
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [BoxShadow(color: AppTheme.pastelYellow.withOpacity(0.5), blurRadius: 30, spreadRadius: 10)],
               ),
-            ).animate()
-             .fadeIn(duration: 1.seconds)
-             .shimmer(delay: 500.ms, duration: 2.seconds, color: AppTheme.bubblegumPink.withOpacity(0.5)),
+              child: Text(
+                _currentNarrative,
+                textAlign: TextAlign.justify,
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: AppTheme.starkWhite,
+                  fontWeight: FontWeight.w500,
+                  height: 1.6,
+                ),
+              ),
+            ),
           ),
-          const SizedBox(height: 30),
-          GestureDetector(
-            onTap: () => setState(() => _state = GameState.rating),
-            child: const Text("Skip to Rating >>", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
-          ).animate().fadeIn(delay: 4.seconds),
-        ],
-      ),
+        ).animate().fadeIn(duration: 1.seconds),
+        ElevatedButton(
+          onPressed: () => setState(() => _state = GameState.rating),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppTheme.starkBlack,
+            foregroundColor: AppTheme.starkWhite,
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          ),
+          child: const Text("Rate This Timeline \u2728", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        ).animate().scale(delay: 2.seconds, curve: Curves.elasticOut),
+        const SizedBox(height: 80),
+      ],
     );
   }
 

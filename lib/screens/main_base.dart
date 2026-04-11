@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import '../widgets/hail_mary_background.dart';
 import 'home_dashboard_screen.dart';
+import 'trivia_screen.dart';
 import 'makebelieve_screen.dart';
+import 'draw_screen.dart';
 
 class MainBase extends StatefulWidget {
   const MainBase({Key? key}) : super(key: key);
@@ -43,19 +46,21 @@ class _MainBaseState extends State<MainBase> with SingleTickerProviderStateMixin
   List<Widget> _buildPages() {
     return [
       HomeDashboardScreen(onVibeToggled: _triggerNavBarBounce),
-      const Center(child: Text('Trivia', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
+      const TriviaScreen(),
       const Center(child: Text('Music', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
-      const MakebelieveScreen(), // Repurposed from 'Life'
-      const Center(child: Text('Draw', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
+      const MakebelieveScreen(),
+      const DrawScreen(), // Repurposed from 'Draw' placeholder text
     ];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent, // Let background shine through
       extendBody: true,
       body: Stack(
         children: [
+          const Positioned.fill(child: HailMaryBackground()), // GLOBAL BACKGROUND
           _buildPages()[_currentIndex],
           
           // Animated Custom Bottom Navigation Bar
