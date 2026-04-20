@@ -83,18 +83,24 @@ class _TriviaScreenState extends State<TriviaScreen> {
         children: [
           const Text(
             "Trivia Time!",
-            style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: AppTheme.starkBlack),
+            style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: AppTheme.starkWhite),
           ).animate().slideY(begin: -0.5).fadeIn(),
           const SizedBox(height: 10),
           const Text(
             "Test your knowledge about us.",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white70),
           ).animate().fadeIn(delay: 200.ms),
           const SizedBox(height: 50),
-          
-          _buildCategoryBtn("\uD83D\uDC76 \n The Adesh Lore", TriviaData.catLore, AppTheme.babyBlue, 400),
-          _buildCategoryBtn("\uD83E\uDD13 \n The Nerd Files", TriviaData.catNerd, AppTheme.pastelYellow, 500),
-          _buildCategoryBtn("\uD83D\uDC96 \n The Khadija Chapter", TriviaData.catUs, AppTheme.bubblegumPink, 600),
+          Expanded(
+            child: ListView(
+              physics: const BouncingScrollPhysics(),
+              children: [
+                _buildCategoryBtn("\uD83D\uDC76 \n The Adesh Lore", TriviaData.catLore, AppTheme.starkBlack, 400),
+                _buildCategoryBtn("\uD83D\uDC96 \n The Khadija Chapter", TriviaData.catUs, AppTheme.starkBlack, 500),
+                _buildCategoryBtn("\uD83E\uDD13 \n The Nerd Files", TriviaData.catNerd, AppTheme.starkBlack, 600),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -110,13 +116,13 @@ class _TriviaScreenState extends State<TriviaScreen> {
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppTheme.starkBlack, width: 3),
+          border: Border.all(color: AppTheme.starkWhite, width: 3),
           boxShadow: const [BoxShadow(color: Colors.black26, offset: Offset(0, 5), blurRadius: 0)],
         ),
         child: Text(
           title,
           textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: AppTheme.starkBlack, height: 1.3),
+          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: AppTheme.starkWhite, height: 1.3),
         ),
       ).animate().scale(delay: delayMs.ms, curve: Curves.easeOutBack),
     );
@@ -130,8 +136,8 @@ class _TriviaScreenState extends State<TriviaScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IconButton(icon: const Icon(Icons.arrow_back_ios, size: 24), onPressed: () => setState(() => _state = TriviaState.categories)),
-            Text("HP: $_hp / 5", style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.starkBlack))
+            IconButton(icon: const Icon(Icons.arrow_back_ios, size: 24, color: AppTheme.starkWhite), onPressed: () => setState(() => _state = TriviaState.categories)),
+            Text("HP: $_hp / 5", style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.starkWhite))
                 .animate(key: ValueKey(_hp)).shakeX(duration: 300.ms).scale(begin: const Offset(1,1), end: const Offset(1.3,1.3)),
           ],
         ),
@@ -153,15 +159,15 @@ class _TriviaScreenState extends State<TriviaScreen> {
         Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: AppTheme.starkWhite,
+            color: AppTheme.starkBlack,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: AppTheme.starkBlack, width: 2),
+            border: Border.all(color: AppTheme.starkWhite, width: 2),
             boxShadow: const [BoxShadow(offset: Offset(4, 4), color: Colors.black12)],
           ),
           child: Text(
             q.question,
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.starkBlack),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.starkWhite),
           ),
         ).animate(key: ValueKey("box_${q.question}")).slideX(begin: 1.0, curve: Curves.easeOutCirc),
         
@@ -176,15 +182,15 @@ class _TriviaScreenState extends State<TriviaScreen> {
               final isSelected = _selectedOptionIdx == idx;
               final isCorrectOption = idx == q.correctIndex;
               
-              Color btnColor = AppTheme.starkWhite;
+              Color btnColor = AppTheme.starkBlack;
               if (_showingAnswer) {
                 if (isCorrectOption) {
-                  btnColor = Colors.greenAccent.shade200; // Correct answer flashes green
+                  btnColor = Colors.greenAccent.shade400; // Correct answer flashes green
                 } else if (isSelected) {
-                  btnColor = Colors.redAccent.shade200; // Wrong choice flashes red
+                  btnColor = Colors.redAccent.shade400; // Wrong choice flashes red
                 }
               } else if (isSelected) {
-                btnColor = Colors.grey.shade300;
+                btnColor = Colors.grey.shade800;
               }
 
               return GestureDetector(
@@ -195,12 +201,12 @@ class _TriviaScreenState extends State<TriviaScreen> {
                   decoration: BoxDecoration(
                     color: btnColor,
                     borderRadius: BorderRadius.circular(15),
-                    border: Border.all(color: AppTheme.starkBlack, width: 2),
+                    border: Border.all(color: AppTheme.starkWhite, width: 2),
                   ),
                   child: Text(
                     q.options[idx],
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.starkBlack),
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.starkWhite),
                   ),
                 ).animate(key: ValueKey("btn_${q.question}_$idx")).scale(delay: (idx * 150).ms, curve: Curves.easeOutBack),
               );
@@ -219,19 +225,19 @@ class _TriviaScreenState extends State<TriviaScreen> {
         children: [
           Text(
             isPerfect ? "\uD83C\uDF89 WINNER! \uD83C\uDF89" : "Good Try!",
-            style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: AppTheme.starkBlack),
+            style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: AppTheme.starkWhite),
           ).animate().scale(curve: Curves.elasticOut),
           const SizedBox(height: 20),
           Text(
             "You scored $_hp / 5 HP",
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.grey),
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white70),
           ),
           const SizedBox(height: 30),
           if (isPerfect) ...[
             const Text(
               "You know me flawlessly...\nYou've unlocked the special prize!",
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppTheme.starkBlack),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppTheme.starkWhite),
             ).animate().fadeIn(delay: 500.ms),
             const SizedBox(height: 40),
             ElevatedButton(
@@ -252,6 +258,11 @@ class _TriviaScreenState extends State<TriviaScreen> {
                 ],
               ),
             ).animate(onPlay: (c) => c.repeat(reverse: true)).scale(begin: const Offset(0.9, 0.9), end: const Offset(1.1, 1.1), duration: 1.seconds),
+            const SizedBox(height: 20),
+            TextButton(
+              onPressed: () => setState(() => _state = TriviaState.categories),
+              child: const Text("Back to Trivia Home", style: TextStyle(color: AppTheme.starkWhite, fontSize: 18, fontWeight: FontWeight.bold, decoration: TextDecoration.underline)),
+            ),
           ] else ...[
             const Text(
               "Almost! You need a perfect 5/5 to unlock your WhatsApp gift. Try again!",

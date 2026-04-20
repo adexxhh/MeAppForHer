@@ -112,13 +112,13 @@ class _MakebelieveScreenState extends State<MakebelieveScreen> {
           const Text(
             "Baby,\nMakebelieve Time!",
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: AppTheme.starkBlack, height: 1.1),
+            style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: AppTheme.starkWhite, height: 1.1, shadows: [Shadow(color: Colors.black54, blurRadius: 10)]),
           ).animate().slideY(begin: -0.2).fadeIn(),
           const SizedBox(height: 20),
           const Text(
             "Build our dream timeline, one choice at a time.",
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.starkBlack),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.starkWhite, shadows: [Shadow(color: Colors.black54, blurRadius: 5)]),
           ),
           const SizedBox(height: 40),
           
@@ -128,7 +128,7 @@ class _MakebelieveScreenState extends State<MakebelieveScreen> {
               backgroundColor: AppTheme.starkBlack,
               foregroundColor: AppTheme.starkWhite,
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30), side: const BorderSide(color: AppTheme.starkWhite, width: 2)),
             ),
             child: const Text("Dream a Life \u2728", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           ).animate().scale(delay: 400.ms, curve: Curves.elasticOut),
@@ -138,7 +138,7 @@ class _MakebelieveScreenState extends State<MakebelieveScreen> {
           if (_history.isNotEmpty)
             TextButton(
               onPressed: () => setState(() => _state = GameState.history),
-              child: const Text("Read our Diary", style: TextStyle(color: AppTheme.starkBlack, fontSize: 16, fontWeight: FontWeight.bold, decoration: TextDecoration.underline)),
+              child: const Text("Read our Diary", style: TextStyle(color: AppTheme.starkWhite, fontSize: 16, fontWeight: FontWeight.bold, decoration: TextDecoration.underline)),
             ).animate().fadeIn(delay: 800.ms),
         ],
       ),
@@ -155,9 +155,9 @@ class _MakebelieveScreenState extends State<MakebelieveScreen> {
           children: [
             const Text(
               "Our Timelines \uD83D\uDCD6",
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900, color: AppTheme.starkBlack),
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900, color: AppTheme.starkWhite, shadows: [Shadow(color: Colors.black54, blurRadius: 10)]),
             ),
-            IconButton(icon: const Icon(Icons.close, size: 30), onPressed: () => setState(() => _state = GameState.intro)),
+            IconButton(icon: const Icon(Icons.close, size: 30, color: AppTheme.starkWhite), onPressed: () => setState(() => _state = GameState.intro)),
           ],
         ),
         const SizedBox(height: 20),
@@ -170,9 +170,9 @@ class _MakebelieveScreenState extends State<MakebelieveScreen> {
                 margin: const EdgeInsets.only(bottom: 20),
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: AppTheme.starkWhite,
+                  color: AppTheme.starkBlack,
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: AppTheme.starkBlack, width: 2),
+                  border: Border.all(color: AppTheme.starkWhite, width: 2),
                   boxShadow: const [BoxShadow(color: Colors.black12, offset: Offset(0, 4), blurRadius: 10)],
                 ),
                 child: Column(
@@ -182,7 +182,7 @@ class _MakebelieveScreenState extends State<MakebelieveScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: Text(item['city'] ?? "", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: AppTheme.starkBlack)),
+                          child: Text(item['city'] ?? "", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: AppTheme.starkWhite)),
                         ),
                         Row(
                           children: List.generate(5, (starIdx) => Icon(
@@ -193,12 +193,12 @@ class _MakebelieveScreenState extends State<MakebelieveScreen> {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    Text("Adesh: ${item['hisJob']}", style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),
-                    Text("Khadija: ${item['herJob']}", style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),
+                    Text("Adesh: ${item['hisJob']}", style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.white70)),
+                    Text("Khadija: ${item['herJob']}", style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.white70)),
                     const SizedBox(height: 15),
                     Text(
                       item['story'] ?? "",
-                      style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 15, color: AppTheme.starkBlack),
+                      style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 15, color: AppTheme.starkWhite),
                     ),
                   ],
                 ),
@@ -218,17 +218,17 @@ class _MakebelieveScreenState extends State<MakebelieveScreen> {
         const SizedBox(height: 40),
         const Text(
           "Step 1:",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white70),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text(
               "Where do we live?",
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900, color: AppTheme.starkBlack),
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900, color: AppTheme.starkWhite, shadows: [Shadow(color: Colors.black54, blurRadius: 10)]),
             ),
             IconButton(
-              icon: const Icon(Icons.shuffle_rounded, size: 28),
+              icon: const Icon(Icons.shuffle_rounded, size: 28, color: AppTheme.starkWhite),
               onPressed: () {
                 setState(() => _cityOptions = MakebelieveData.getRandomCities(3));
               },
@@ -284,17 +284,17 @@ class _MakebelieveScreenState extends State<MakebelieveScreen> {
         const SizedBox(height: 40),
         Text(
           title == "Adesh" ? "Step 2:" : "Step 3:",
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white70),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               "What is $title doing?",
-              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w900, color: AppTheme.starkBlack),
+              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w900, color: AppTheme.starkWhite, shadows: [Shadow(color: Colors.black54, blurRadius: 10)]),
             ),
             IconButton(
-              icon: const Icon(Icons.shuffle_rounded, size: 28),
+              icon: const Icon(Icons.shuffle_rounded, size: 28, color: AppTheme.starkWhite),
               onPressed: () {
                 setState(() {
                    if (title == "Adesh") {
@@ -390,9 +390,9 @@ class _MakebelieveScreenState extends State<MakebelieveScreen> {
       child: Container(
         padding: const EdgeInsets.all(30),
         decoration: BoxDecoration(
-          color: AppTheme.starkWhite,
+          color: AppTheme.starkBlack,
           borderRadius: BorderRadius.circular(30),
-          border: Border.all(color: AppTheme.starkBlack, width: 3),
+          border: Border.all(color: AppTheme.starkWhite, width: 3),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -400,7 +400,7 @@ class _MakebelieveScreenState extends State<MakebelieveScreen> {
             const Text(
               "How was this timeline?",
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900, color: AppTheme.starkBlack),
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900, color: AppTheme.starkWhite),
             ),
             const SizedBox(height: 30),
             Row(

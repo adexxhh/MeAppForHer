@@ -109,7 +109,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
       if (force) _memes.clear();
     });
     try {
-      final response = await http.get(Uri.parse("https://meme-api.com/gimme/wholesomememes/5"));
+      final response = await http.get(Uri.parse("https://meme-api.com/gimme/wholesomememes+IndianDankMemes+RelationshipMemes/5"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final memesData = data['memes'] as List;

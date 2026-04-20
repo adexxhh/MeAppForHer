@@ -5,6 +5,7 @@ import 'home_dashboard_screen.dart';
 import 'trivia_screen.dart';
 import 'makebelieve_screen.dart';
 import 'draw_screen.dart';
+import 'puzzle_screen.dart';
 
 class MainBase extends StatefulWidget {
   const MainBase({Key? key}) : super(key: key);
@@ -47,7 +48,7 @@ class _MainBaseState extends State<MainBase> with SingleTickerProviderStateMixin
     return [
       HomeDashboardScreen(onVibeToggled: _triggerNavBarBounce),
       const TriviaScreen(),
-      const Center(child: Text('Music', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
+      const PuzzleScreen(),
       const MakebelieveScreen(),
       const DrawScreen(), // Repurposed from 'Draw' placeholder text
     ];
@@ -61,7 +62,10 @@ class _MainBaseState extends State<MainBase> with SingleTickerProviderStateMixin
       body: Stack(
         children: [
           const Positioned.fill(child: HailMaryBackground()), // GLOBAL BACKGROUND
-          _buildPages()[_currentIndex],
+          IndexedStack(
+            index: _currentIndex,
+            children: _buildPages(),
+          ),
           
           // Animated Custom Bottom Navigation Bar
           AnimatedBuilder(
@@ -92,7 +96,7 @@ class _MainBaseState extends State<MainBase> with SingleTickerProviderStateMixin
                 children: [
                   _buildNavItem(Icons.home_rounded, 0),
                   _buildNavItem(Icons.extension_rounded, 1),
-                  _buildNavItem(Icons.music_note_rounded, 2),
+                  _buildNavItem(Icons.sports_esports_rounded, 2),
                   _buildNavItem(Icons.favorite_rounded, 3),
                   _buildNavItem(Icons.brush_rounded, 4),
                 ],
