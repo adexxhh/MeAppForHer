@@ -14,23 +14,12 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
   // 3x3 Puzzle state: list of 9 integers containing 0..8
   // 8 represents the empty tile.
   late List<int> _tiles;
-  String _imageUrl = "";
   bool _isSolved = false;
   bool _showNumbers = false;
   bool _isPeeking = false;
 
-  final List<String> _easyPictures = [
-    // YouTube high-quality thumbnails are completely safe from rate-limiting/404s,
-    // incredibly fast, and feature exactly the massive pop-culture/marvel faces asked for!
-    "https://i.ytimg.com/vi/JfVOs4VSpmA/hqdefault.jpg", // Spider-Man No Way Home
-    "https://i.ytimg.com/vi/e-ORhEE9VVg/hqdefault.jpg", // Taylor Swift - Blank Space
-    "https://i.ytimg.com/vi/34Na4j8HLjc/hqdefault.jpg", // The Weeknd - Starboy
-    "https://i.ytimg.com/vi/8ugaeA-nMQc/hqdefault.jpg", // Iron Man
-    "https://i.ytimg.com/vi/TcMBFSGVi1c/hqdefault.jpg", // Avengers Endgame
-    "https://i.ytimg.com/vi/mqqft2x_Aa4/hqdefault.jpg", // The Batman
-    "https://i.ytimg.com/vi/OPf0YbXqDm0/hqdefault.jpg", // Bruno Mars - Uptown Funk
-    "https://i.ytimg.com/vi/DyDfgMOUjCI/hqdefault.jpg", // Billie Eilish - Bad Guy
-  ];
+  // The path to your custom image!
+  final String _imageAsset = 'assets/us.jpg';
 
   @override
   void initState() {
@@ -40,18 +29,11 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
 
   void _loadNewGame() {
     setState(() {
-      String newUrl;
-      do {
-        newUrl = _easyPictures[Random().nextInt(_easyPictures.length)];
-      } while (newUrl == _imageUrl); // Prevent back-to-back same images
-      
-      _imageUrl = newUrl;
-      
       _tiles = List.generate(9, (index) => index);
       _isSolved = false;
     });
 
-    // Shuffle by making 100 random valid moves
+    // Shuffle by making 150 random valid moves
     // This absolutely guarantees the puzzle is mathematically solvable
     _performShuffle();
   }
@@ -126,7 +108,7 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
         padding: const EdgeInsets.all(4),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(11),
-          child: Image.network(_imageUrl, fit: BoxFit.cover),
+          child: Image.asset(_imageAsset, fit: BoxFit.cover),
         ),
       ).animate().scale(curve: Curves.easeOutBack, duration: 300.ms);
     }
@@ -189,27 +171,11 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
-                        Image.network(
-                          _imageUrl,
-                          headers: const {'User-Agent': 'MeAppForHer/1.0 (Mobile) Flutter/Dart'},
+                        Image.asset(
+                          _imageAsset,
                           fit: BoxFit.cover,
                           width: constraints.maxWidth * 3.05,
                           height: constraints.maxHeight * 3.05,
-                          errorBuilder: (context, error, stackTrace) {
-                             return Container(
-                               color: Colors.grey.shade900,
-                               child: const Center(child: Icon(Icons.broken_image, color: Colors.redAccent, size: 40)),
-                             );
-                          },
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Container(
-                              color: AppTheme.starkBlack,
-                              child: const Center(
-                                child: CircularProgressIndicator(color: AppTheme.starkWhite),
-                              ),
-                            );
-                          },
                         ),
                         if (_showNumbers && pieceValue != 8)
                           Center(
@@ -249,7 +215,7 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Jigsaw Challenge \uD83C\uDFA8",
+                    "Jigsaw Challenge 🎨",
                     style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: AppTheme.starkWhite),
                   ),
                 ),
@@ -265,7 +231,7 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    "GOOD WORK, BUT ARE YOU BORED? TEXT HIM \uD83D\uDCF2",
+                    "GOOD WORK, BUT ARE YOU BORED? TEXT HIM 📱",
                     textAlign: TextAlign.center,
                     style: TextStyle(color: AppTheme.starkWhite, fontSize: 24, fontWeight: FontWeight.w900),
                   ),
@@ -318,11 +284,11 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
               
               const SizedBox(height: 30),
 
-              // Reset / Next Button
+              // Reset Button
               ElevatedButton.icon(
                 onPressed: _loadNewGame,
                 icon: const Icon(Icons.refresh_rounded, size: 28),
-                label: const Text("Shuffle New Image"),
+                label: const Text("Reshuffle Puzzle"),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.starkBlack,
                   foregroundColor: AppTheme.starkWhite,
